@@ -3,3 +3,6 @@
 !.bash_*
 !.gitignore
 .bash_history
+
+
+.bash_*.*
