@@ -2,7 +2,8 @@
 
 !.bash_*
 !.gitignore
+
 .bash_history
-
-
 .bash_*.*
+.bash_vars
+.bash_logout
