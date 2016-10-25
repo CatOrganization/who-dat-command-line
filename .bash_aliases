@@ -9,6 +9,8 @@ alias lsa="ls -a"
 alias l="ls -CF"
 alias ll="ls -alF"
 
+alias src='echo -n "Sourcing ~/.bash_profile..."; source ~/.bash_profile; echo "DONE";'
+
 # New aliases go here
 
 alias gPics="cd ~/Pictures"
