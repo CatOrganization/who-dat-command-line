@@ -16,5 +16,13 @@ alias enable-keyboard='xinput set-int-prop $internal_keyboard "Device Enabled" 8
 # VPN
 alias sweden='openvpn /etc/openvpn/se.openvpn.frootvpn.ovpn'
 
-# Pword Manager
-alias password='java -jar ~/Desktop/Code/PW_V3.jar'
+alias l="ls -CF"
+alias ll="ls -alF"
+
+# New aliases go here
+
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias ..="cd .."
+alias ...="cd ../.."
+alias paths="echo -e ${PATH//:\\n}"
