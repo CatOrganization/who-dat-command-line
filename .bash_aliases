@@ -21,6 +21,4 @@ alias ...="cd ../.."
 alias paths="echo -e ${PATH//:\\n}"
 alias gotohw="cd ~/OneDrive\ -\ Georgia\ Institute\ of\ Technology/Dropbox/Classes/CS\ 1315\ TA/Homework\ Team/"
 
-alias mysqlremote="mysql -u remote -h $RM -P 3307 --password='butmonica'"
-
 alias syncMusic="unison ~/Music/iTunes/iTunes\ Media/Music/ ssh://ricky@$PS//media/Plex/Music"
