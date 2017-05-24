@@ -9,6 +9,8 @@ GRADLE_HOME="/usr/local/Cellar/gradle/3.4.1"
 PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin"
 PATH="$PATH:$GRADLE_HOME/bin"
 export GOROOT="/usr/local/bin"
+
+#TODO move this to pearlterminal_spec
 export GOPATH="$HOME/coding/go"
 PATH="${HOME}/bin:${PATH}"
 
