@@ -5,7 +5,12 @@ export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 alias ls='ls -GFh'
 ######################
-PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin:${HOME}/bin:${PATH}"
+GRADLE_HOME="/usr/local/Cellar/gradle/3.4.1"
+PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin"
+PATH="$PATH:$GRADLE_HOME/bin"
+export GOROOT="/usr/local/bin"
+export GOPATH="$HOME/coding/go"
+PATH="${HOME}/bin:${PATH}"
 
 # https://github.com/nvbn/thefuck/
 # brew install thefuck
@@ -22,8 +27,13 @@ if [ -f ~/.bash_functions ]; then
 fi
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+	. ~/.bash_aliases
 fi
+# Setting PATH for Python 3.6
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
+export PATH
+
 
 # https://github.com/magicmonty/bash-git-prompt#via-homebrew-on-mac-os-x
 # brew install bash-git-prompt
@@ -37,4 +47,3 @@ fi
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
-
