@@ -26,4 +26,4 @@ alias paths="echo -e ${PATH//:\\n}"
 alias gotohw="cd ~/OneDrive\ -\ Georgia\ Institute\ of\ Technology/Dropbox/Classes/CS\ 1315\ TA/Homework\ Team/"
 
 alias syncMusic="unison ~/Music/iTunes/iTunes\ Media/Music/ ssh://ricky@$PS//media/Plex/Music"
-alias dockerRM="docker rm -f $(docker ps -a -q)"
+alias dockerRM='docker rm -f $(docker ps -a -q)'
