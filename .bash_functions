@@ -16,3 +16,7 @@ mans () {
 }
 
 showa () { /usr/bin/grep --color=always -i -a1 $@ ~/Library/init/bash/aliases.bash | grep -v '^\s*$' | less -FSRXc ; }
+
+plex_sync () {
+	unison $1 ssh://ricky@$PS/$2
+}
