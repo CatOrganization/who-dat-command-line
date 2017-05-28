@@ -19,3 +19,6 @@ alias paths="echo -e ${PATH//:\\n}"
 
 
 alias mysqlremote="mysql -u remote -h $RM -P 3307 --password='butmonica'"
+
+alias sweden="sudo openvpn /etc/openvpn/se.openvpn.frootvpn.opvn"
+
