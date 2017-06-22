@@ -1,0 +1,17 @@
+[alias]
+	com = commit
+[alias]
+	comm = commit -m
+[alias]
+	comi = commit --interactive
+[alias]
+	co = checkout
+[alias]
+	adu = add -u
+[alias]
+	pushu = push -u
+[alias]
+	s = status
+[user]
+	name = Ricky Barillas
+	email = devnall@gmail.com

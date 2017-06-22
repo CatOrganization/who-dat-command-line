@@ -2,6 +2,7 @@
 
 !.bash_*
 !.gitignore
+!.gitconfig
 
 .bash_history
 .bash_*.*
