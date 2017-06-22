@@ -41,3 +41,8 @@ alias gotop="cd ~/OneDrive\ -\ Georgia\ Institute\ of\ Technology/Dropbox/Classe
 
 alias syncMusic="unison ~/Music/iTunes/iTunes\ Media/Music/ ssh://ricky@$PS//media/Plex/Music"
 
+
+
+
+alias pandocker="docker run -v `pwd`:/source jagregory/pandoc"
+
