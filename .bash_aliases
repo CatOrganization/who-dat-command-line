@@ -41,3 +41,13 @@ alias gotop="cd ~/OneDrive\ -\ Georgia\ Institute\ of\ Technology/Dropbox/Classe
 
 alias syncMusic="unison ~/Music/iTunes/iTunes\ Media/Music/ ssh://ricky@$PS//media/Plex/Music"
 
+
+# Github
+
+alias gco="git checkout"
+alias gp="git push"
+alias gpl="git pull"
+alias gstat="git status"
+alias gadu="git add -u"
+alias gcom="git commit"
+alias gcomm="git commit -m"
