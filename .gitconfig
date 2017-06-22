@@ -1,0 +1,8 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Ricky Barillas
+[user]
+	name = Ricky Barillas
+	email = rbarillas@pindrop.com
+[core]
+	editor = vim
