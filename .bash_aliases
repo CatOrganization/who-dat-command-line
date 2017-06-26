@@ -21,6 +21,7 @@ alias ...="cd ../.."
 alias paths="echo -e ${PATH//:\\n}"
 
 alias dockerRM='docker rm -f $(docker ps -a -q)'
+alias grep='grep --color=auto'
 
 
 #TODO move this to pearlterminal_spec

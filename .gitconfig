@@ -17,3 +17,7 @@
 	pushu = push -u
 [alias]
 	s = status
+[user]
+	name = Ricky Barillas
+	email = ricky.barillas@gmail.com
+
