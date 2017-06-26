@@ -49,6 +49,7 @@ alias pandocker="docker run -v `pwd`:/source jagregory/pandoc"
 
 alias gco="git checkout"
 alias gp="git push"
+alias gpu="git push -u"
 alias gpl="git pull"
 alias gstat="git status"
 alias gadu="git add -u"
