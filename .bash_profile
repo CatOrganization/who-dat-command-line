@@ -11,7 +11,7 @@ if [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
 fi
 
-if [ -f ~/bin ]; then
+if [ -d ~/bin ]; then
 	PATH="${HOME}/bin:${PATH}"
 fi
 
