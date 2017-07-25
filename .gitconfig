@@ -1,5 +1,0 @@
-[user]
-    email = ricky.barillas@gmail.com
-[credential]
-    helper = gnome-keyring
-

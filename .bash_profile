@@ -4,27 +4,30 @@ export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 alias ls='ls -GFh'
 ######################
-
 # export GOROOT="`which go`"
 PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin" #:${GOROOT}"
 if [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
 fi
 
-if [ -f ~/bin ]; then
+if [ -d ~/bin ]; then
 	PATH="${HOME}/bin:${PATH}"
 fi
+echo $GOPATH
 
+if [ -d "${GOPATH}" ]; then
+	PATH="${PATH}:${GOPATH}/bin"
+fi
 
 
 # https://github.com/nvbn/thefuck/
 # brew install thefuck
 eval $(thefuck --alias)
 
-# source pearlterminal specific environment variables
-# pearlterminal is my personal mac
-if [ -f ~/.pearlterminal_spec ]; then
-    . ~/.pearlterminal_spec
+
+# personal is my personal mac
+if [ -f ~/.personal_spec ]; then
+    . ~/.personal_spec
 fi
 
 if [ -f ~/.randall_spec ]; then

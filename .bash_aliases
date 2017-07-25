@@ -21,6 +21,7 @@ alias ...="cd ../.."
 alias paths="echo -e ${PATH//:\\n}"
 
 alias dockerRM='docker rm -f $(docker ps -a -q)'
+alias grep='grep --color=auto'
 
 
 #TODO move this to pearlterminal_spec
@@ -41,3 +42,18 @@ alias gotop="cd ~/OneDrive\ -\ Georgia\ Institute\ of\ Technology/Dropbox/Classe
 
 alias syncMusic="unison ~/Music/iTunes/iTunes\ Media/Music/ ssh://ricky@$PS//media/Plex/Music"
 
+
+alias pandocker="docker run -v `pwd`:/source jagregory/pandoc"
+
+
+# Github
+
+alias gco="git checkout"
+alias gp="git push"
+alias gpu="git push -u"
+alias gpl="git pull"
+alias gstat="git status -uno"
+alias gstata="git status"
+alias gadu="git add -u"
+alias gcom="git commit"
+alias gcomm="git commit -m"
