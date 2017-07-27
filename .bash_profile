@@ -30,6 +30,10 @@ if [ -f ~/.personal_spec ]; then
     . ~/.personal_spec
 fi
 
+if [ -f ~/.randall_spec ]; then
+    . ~/.randall_spec
+fi
+
 if [ -f ~/.work_spec ]; then
     . ~/.work_spec
 fi
