@@ -13,7 +13,6 @@ fi
 if [ -d ~/bin ]; then
 	PATH="${HOME}/bin:${PATH}"
 fi
-echo $GOPATH
 
 if [ -d "${GOPATH}" ]; then
 	PATH="${PATH}:${GOPATH}/bin"
