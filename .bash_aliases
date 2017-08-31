@@ -36,8 +36,7 @@ alias networklab2='ssh rbarillas3@networklab2.cc.gatech.edu'
 alias networklab3='ssh rbarillas3@networklab3.cc.gatech.edu'
 alias networklab4='ssh rbarillas3@networklab4.cc.gatech.edu'
 
-alias gotohw="cd ~/OneDrive\ -\ Georgia\ Institute\ of\ Technology/Dropbox/Classes/CS\ 1332\ TA/Homework"
-alias gotop="cd ~/OneDrive\ -\ Georgia\ Institute\ of\ Technology/Dropbox/Classes/Networking/project3"
+alias gotoc="cd ~/OneDrive-GeorgiaInstituteofTechnology/Dropbox/Classes/"
 
 
 alias syncMusic="unison ~/Music/iTunes/iTunes\ Media/Music/ ssh://ricky@$PS//media/Plex/Music"

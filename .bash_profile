@@ -1,3 +1,12 @@
+if [ "$(uname -s)" == "Darwin" ]; then
+    MAC=1
+elif [ "$(uname -s)" == "Linux" ]; then
+    LINUX=1
+fi
+
+MAC=${MAC:-0}
+LINUX=${LINUX:-0}
+
 ##### set colors #####
 export PS1="\[\033[36m\]\u\[\033[m\]\[\033[33;1m\]\w\[\033[m\]\n\$ "
 export CLICOLOR=1
@@ -6,7 +15,8 @@ alias ls='ls -GFh'
 ######################
 # export GOROOT="`which go`"
 PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin" #:${GOROOT}"
-if [ -d ~/homebrew ]; then
+
+if [ $MAC -eq 1 && -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
 fi
 
@@ -21,7 +31,9 @@ fi
 
 # https://github.com/nvbn/thefuck/
 # brew install thefuck
-eval $(thefuck --alias)
+if [ $MAC -eq 1 ]; then
+    eval $(thefuck --alias)
+fi
 
 
 # personal is my personal mac
@@ -42,7 +54,7 @@ if [ -f ~/.bash_functions ]; then
 fi
 
 if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 
 
@@ -61,3 +73,8 @@ fi
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
+
+# Setting PATH for Python 3.6
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
+export PATH
