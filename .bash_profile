@@ -36,12 +36,6 @@ if [ -d "${GOPATH}" ]; then
 fi
 
 
-# https://github.com/nvbn/thefuck/
-# brew install thefuck
-if [ "$mac" -eq 1 ]; then
-    eval $(thefuck --alias)
-fi
-
 
 # personal is my personal mac
 if [ -f ~/.personal_spec ]; then
@@ -67,20 +61,27 @@ fi
 
 export PATH
 
+# https://github.com/nvbn/thefuck/
+# brew install thefuck
+if [ "$mac" -eq 1 ]; then
+    eval $(thefuck --alias)
+fi
 
 # https://github.com/magicmonty/bash-git-prompt#via-homebrew-on-mac-os-x
 # brew install bash-git-prompt
-if [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
+if [ "$mac" -eq 1 ] && [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
   source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
-else
+elif [ "$linux" -eq 1 ];then
   GIT_PROMPT_ONLY_IN_REPO=1
   source ~/.bash-git-prompt/gitprompt.sh
+else
+    echo "this is an os we didn't account for $(uname -s)"
 fi
 
 # https://github.com/bobthecow/git-flow-completion/wiki/Install-Bash-git-completion
 # brew install git && brew install bash-completion
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
+if [ "$mac" -eq 1 ] && [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
 
