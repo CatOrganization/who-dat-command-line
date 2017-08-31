@@ -1,11 +1,18 @@
 if [ "$(uname -s)" == "Darwin" ]; then
-    MAC=1
+    mac=1
 elif [ "$(uname -s)" == "Linux" ]; then
-    LINUX=1
+    linux=1
+fi
+# we are making a big assumption here
+# ultimately if spf13 is installed then everything else is
+if [ -d ~/.spf12-vim-3 ];then 
+    setup=1
 fi
 
-MAC=${MAC:-0}
-LINUX=${LINUX:-0}
+# default these to 0
+mac=${mac:-0}
+linux=${linux:-0}
+setup=${setup:-0}
 
 ##### set colors #####
 export PS1="\[\033[36m\]\u\[\033[m\]\[\033[33;1m\]\w\[\033[m\]\n\$ "
@@ -16,7 +23,7 @@ alias ls='ls -GFh'
 # export GOROOT="`which go`"
 PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin" #:${GOROOT}"
 
-if [ $MAC -eq 1 && -d ~/homebrew ]; then
+if [ $mac -eq 1 ] && [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
 fi
 
@@ -31,7 +38,7 @@ fi
 
 # https://github.com/nvbn/thefuck/
 # brew install thefuck
-if [ $MAC -eq 1 ]; then
+if [ "$mac" -eq 1 ]; then
     eval $(thefuck --alias)
 fi
 
