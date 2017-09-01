@@ -3,37 +3,35 @@
 
 # we are making a big assumption here
 # ultimately if spf13 is installed then everything else is
-if [ ! -d ~/.spf12-vim-3 ];then 
+if [ ! -d ~/.spf13-vim-3 ];then 
   setup=1
 fi
-
 setup=${setup:-0}
 
 if [ "$setup" -eq 1 ]; then
-  if [ "$mac" -eq 1]; then
+  if [ "$mac" -eq 1 ]; then
     brew install thefuck
     brew install git
     brew install bash-git-prompt
     brew install bash-completion
-    sh <(curl https://j.mp/spf13-vim3 -L)
-  elif [ "$linux" -eq 1]; then
+  elif [ "$linux" -eq 1 ]; then
     git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt --depth=1
-    sh <(curl https://j.mp/spf13-vim3 -L)
   fi
+  sh <(curl https://j.mp/spf13-vim3 -L)
 fi
 
 # https://github.com/nvbn/thefuck/
 # brew install thefuck
-if [ "$mac" -eq 1  ]; then
+if [ "$mac" -eq 1 ]; then
   eval $(thefuck --alias)
 fi
 
 # https://github.com/magicmonty/bash-git-prompt#via-homebrew-on-mac-os-x
 # brew install bash-git-prompt
-if [ "$mac" -eq 1  ] && [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"  ]; then
+if [ "$mac" -eq 1 ] && [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
   __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
   source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
-elif [ "$linux" -eq 1  ];then
+elif [ "$linux" -eq 1 ];then
   GIT_PROMPT_ONLY_IN_REPO=1
   source ~/.bash-git-prompt/gitprompt.sh
 else
@@ -42,6 +40,6 @@ fi
 
 # https://github.com/bobthecow/git-flow-completion/wiki/Install-Bash-git-completion
 # brew install git && brew install bash-completion
-if [ "$mac" -eq 1  ] && [ -f $(brew --prefix)/etc/bash_completion  ]; then
+if [ "$mac" -eq 1 ] && [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
