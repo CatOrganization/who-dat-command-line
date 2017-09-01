@@ -3,16 +3,10 @@ if [ "$(uname -s)" == "Darwin" ]; then
 elif [ "$(uname -s)" == "Linux" ]; then
     linux=1
 fi
-# we are making a big assumption here
-# ultimately if spf13 is installed then everything else is
-if [ -d ~/.spf12-vim-3 ];then 
-    setup=1
-fi
 
 # default these to 0
 mac=${mac:-0}
 linux=${linux:-0}
-setup=${setup:-0}
 
 ##### set colors #####
 export PS1="\[\033[36m\]\u\[\033[m\]\[\033[33;1m\]\w\[\033[m\]\n\$ "
@@ -35,55 +29,33 @@ if [ -d "${GOPATH}" ]; then
 	PATH="${PATH}:${GOPATH}/bin"
 fi
 
-
-
 # personal is my personal mac
 if [ -f ~/.personal_spec ]; then
-    . ~/.personal_spec
+  . ~/.personal_spec
 fi
 
 if [ -f ~/.randall_spec ]; then
-    . ~/.randall_spec
+  . ~/.randall_spec
 fi
 
 if [ -f ~/.work_spec ]; then
-    . ~/.work_spec
+  . ~/.work_spec
 fi
 
 if [ -f ~/.bash_functions ]; then
-    . ~/.bash_functions
+  . ~/.bash_functions
 fi
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+  . ~/.bash_aliases
 fi
 
+if [ -f ~/.bash_setup ]; then
+  . ~/.bash_setup
+fi
 
 export PATH
 
-# https://github.com/nvbn/thefuck/
-# brew install thefuck
-if [ "$mac" -eq 1 ]; then
-    eval $(thefuck --alias)
-fi
-
-# https://github.com/magicmonty/bash-git-prompt#via-homebrew-on-mac-os-x
-# brew install bash-git-prompt
-if [ "$mac" -eq 1 ] && [ -f "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh" ]; then
-  __GIT_PROMPT_DIR=$(brew --prefix)/opt/bash-git-prompt/share
-  source "$(brew --prefix)/opt/bash-git-prompt/share/gitprompt.sh"
-elif [ "$linux" -eq 1 ];then
-  GIT_PROMPT_ONLY_IN_REPO=1
-  source ~/.bash-git-prompt/gitprompt.sh
-else
-    echo "this is an os we didn't account for $(uname -s)"
-fi
-
-# https://github.com/bobthecow/git-flow-completion/wiki/Install-Bash-git-completion
-# brew install git && brew install bash-completion
-if [ "$mac" -eq 1 ] && [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave
