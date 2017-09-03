@@ -3,6 +3,7 @@
 !.bash_*
 !.gitignore
 !.gitconfig
+!.tmux.conf
 
 .bash_history
 .bash_*.*
