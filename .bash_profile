@@ -1,12 +1,12 @@
 if [ "$(uname -s)" == "Darwin" ]; then
-    mac=1
-elif [ "$(uname -s)" == "Linux" ]; then
-    linux=1
+    MAC=true
+elif [ "$(uname -s)" == "LINUX" ]; then
+    LINUX=true
 fi
 
-# default these to 0
-mac=${mac:-0}
-linux=${linux:-0}
+# default these to false
+MAC=${MAC:-false}
+LINUX=${LINUX:-false}
 
 ##### set colors #####
 export PS1="\[\033[36m\]\u\[\033[m\]\[\033[33;1m\]\w\[\033[m\]\n\$ "
@@ -17,7 +17,7 @@ alias ls='ls -GFh'
 # export GOROOT="`which go`"
 PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin" #:${GOROOT}"
 
-if [ $mac -eq 1 ] && [ -d ~/homebrew ]; then
+if [ $MAC ] && [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
 fi
 
@@ -55,7 +55,6 @@ if [ -f ~/.bash_setup ]; then
 fi
 
 export PATH
-
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave
