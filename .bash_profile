@@ -1,6 +1,6 @@
 if [ "$(uname -s)" == "Darwin" ]; then
     MAC=true
-elif [ "$(uname -s)" == "LINUX" ]; then
+elif [ "$(uname -s)" == "Linux" ]; then
     LINUX=true
 fi
 

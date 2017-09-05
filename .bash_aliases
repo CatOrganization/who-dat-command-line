@@ -57,3 +57,6 @@ alias gadu="git add -u"
 alias gcom="git commit"
 alias gcomm="git commit -m"
 alias gpfl="git push --force-with-lease"
+#pbcopy & pbpaste aliases
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
