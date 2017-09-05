@@ -2,7 +2,6 @@
 
 !.bash_*
 !.gitignore
-!.gitconfig
 !.tmux.conf
 
 .bash_history
@@ -12,3 +11,5 @@
 /keyrings/live/pubring.gpg~
 /keyrings/live/pubring.kbx~
 /keyrings/live/secring.gpg
+
+!.bash_setup.sh
