@@ -15,10 +15,12 @@ if $setup; then
     brew install git
     brew install bash-git-prompt
     brew install bash-completion
+    brew install vagrant-completition
   elif $LINUX; then
     git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt --depth=1
     sh <(curl https://j.mp/spf13-vim3 -L)
     setup_pbcopy
+    sudo wget https://raw.github.com/kura/vagrant-bash-completion/master/etc/bash_completion.d/vagrant -O /etc/bash_completion.d/vagrant
   else
     echo "this is an os we didn't account for $(uname -s)"
   fi
@@ -42,6 +44,11 @@ fi
 
 # https://github.com/bobthecow/git-flow-completion/wiki/Install-Bash-git-completion
 # brew install git && brew install bash-completion
-if $MAC && [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
+if $MAC;then
+  if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+  fi
+  if [ -f `brew --prefix`/etc/bash_completion.d/vagrant  ]; then
+    source `brew --prefix`/etc/bash_completion.d/vagrant
+  fi
 fi
