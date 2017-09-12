@@ -7,4 +7,4 @@ To setup in a fresh machine execute these instructions in your home directory:
     git checkout -t origin/ricky-nix
     git reset --hard
     
-    source ./bash_profile
+    source ./.bash_profile
