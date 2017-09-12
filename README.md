@@ -1,11 +1,10 @@
 # who-dat-command-line 
-Everything we do in the cat house
-
-
-When you want to clone into existing repository:
+To setup in a fresh machine execute these instructions in your home directory:
 
     git init
-    git remote add origin PATH/TO/REPO
+    git remote add origin git@github.com:CatOrganization/who-dat-command-line.git
     git fetch
-    git reset origin/ricky-nix // This one is only necessary if files from the repo existed in the folder to begin with
     git checkout -t origin/ricky-nix
+    git reset --hard
+    
+    source ./bash_profile
