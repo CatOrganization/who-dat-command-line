@@ -8,3 +8,7 @@ To setup in a fresh machine execute these instructions in your home directory:
     git reset --hard
     
     source .bash_profile
+
+### TODO
+
+* have it install vim
