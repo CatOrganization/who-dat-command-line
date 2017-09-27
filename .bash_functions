@@ -20,3 +20,15 @@ showa () { /usr/bin/grep --color=always -i -a1 $@ ~/Library/init/bash/aliases.ba
 plex_sync () {
 	unison $1 ssh://ricky@$PS/$2
 }
+
+cgrep () {
+  grep -irn --include \*.h --include \*.c $1 .
+}
+
+hgrep() {
+  grep -irn --include \*.h $1 .
+}
+
+typegrep() {
+  grep -irn --include \*.$1 $2 .
+}
