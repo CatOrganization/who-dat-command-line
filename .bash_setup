@@ -48,4 +48,4 @@ if $MAC;then
   fi
 fi
 
-echo "SETUP=true\nexport SETUP" > ./.setup_env
+printf "SETUP=true\nexport SETUP" > ./.setup_env
