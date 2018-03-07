@@ -1,12 +1,7 @@
 # vim: ai ts=2 sw=2 et sts=2 ft=sh
 # vim: autoindent tabstop=2 shiftwidth=2 expandtab softtabstop=2 filetype=sh
 
-# we are making a big assumption here
-# ultimately if spf13 is installed then everything else is
-if [ ! -d ~/.spf13-vim-3 ];then
-  setup=true
-fi
-setup=${setup:-false}
+setup=${SETUP:-false}
 
 if $setup; then
   source ~/.bash_setup.sh
@@ -52,3 +47,5 @@ if $MAC;then
     source `brew --prefix`/etc/bash_completion.d/vagrant
   fi
 fi
+
+echo "SETUP=true\nexport SETUP" > ./.setup_env
