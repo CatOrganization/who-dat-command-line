@@ -36,6 +36,8 @@ alias networklab2='ssh rbarillas3@networklab2.cc.gatech.edu'
 alias networklab3='ssh rbarillas3@networklab3.cc.gatech.edu'
 alias networklab4='ssh rbarillas3@networklab4.cc.gatech.edu'
 
+alias advos='ssh rbarillas3@advos3.cc.gatech.edu'
+
 alias gotoc="cd ~/OneDrive-GeorgiaInstituteofTechnology/Dropbox/Classes/"
 
 
@@ -57,6 +59,3 @@ alias gadu="git add -u"
 alias gcom="git commit"
 alias gcomm="git commit -m"
 alias gpfl="git push --force-with-lease"
-#pbcopy & pbpaste aliases
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'

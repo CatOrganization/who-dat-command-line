@@ -9,7 +9,7 @@ function setup_pbcopy() {
         sudo apt install xclip -y;
     fi
     #  Add the aliases to the .bashrc
-    echo "#pbcopy & pbpaste aliases" >> ~/.bash_aliases
-    echo "alias pbcopy='xclip -selection clipboard'" >> ~/.bash_aliases
-    echo "alias pbpaste='xclip -selection clipboard -o'"  >> ~/.bash_aliases
+    #echo "#pbcopy & pbpaste aliases" >> ~/.bash_aliases
+    #echo "alias pbcopy='xclip -selection clipboard'" >> ~/.bash_aliases
+    #echo "alias pbpaste='xclip -selection clipboard -o'"  >> ~/.bash_aliases
 }
