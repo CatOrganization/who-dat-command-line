@@ -1,7 +1,8 @@
 # vim: ai ts=2 sw=2 et sts=2 ft=sh
 # vim: autoindent tabstop=2 shiftwidth=2 expandtab softtabstop=2 filetype=sh
+source .setup_env 2> /dev/null
 
-setup=${SETUP:-false}
+setup=${SETUP:-true}
 
 if $setup; then
   source ~/.bash_setup.sh
@@ -48,4 +49,4 @@ if $MAC;then
   fi
 fi
 
-printf "SETUP=true\nexport SETUP\n" > ./.setup_env
+printf "SETUP=false\nexport SETUP\n" > ./.setup_env
