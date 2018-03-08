@@ -14,7 +14,7 @@ if $setup; then
     brew install vagrant-completition
   elif $LINUX; then
     git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt --depth=1
-    sh <(curl https://j.mp/spf13-vim3 -L)
+    # sh <(curl https://j.mp/spf13-vim3 -L)
     setup_pbcopy
     sudo wget https://raw.github.com/kura/vagrant-bash-completion/master/etc/bash_completion.d/vagrant -O /etc/bash_completion.d/vagrant
   else
