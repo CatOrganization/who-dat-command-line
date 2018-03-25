@@ -30,7 +30,7 @@ alias orchid='ssh -o ServerAliveInterval=100 -X orchidterminal@$RM'
 alias webmaster='ssh webmaster@$RM'
 
 alias room='ssh -Y room@$RM'
-alias plexserver='ssh -X ricky@$PS'
+alias plexserver='ssh ricky@$PS'
 alias networklab1='ssh rbarillas3@networklab1.cc.gatech.edu'
 alias networklab2='ssh rbarillas3@networklab2.cc.gatech.edu'
 alias networklab3='ssh rbarillas3@networklab3.cc.gatech.edu'
