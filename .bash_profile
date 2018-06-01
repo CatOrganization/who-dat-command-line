@@ -17,6 +17,8 @@ alias ls='ls -Fh'
 # export GOROOT="`which go`"
 PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin" #:${GOROOT}"
 
+export GOPATH="${HOME}"
+
 if [ $MAC ] && [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
 fi
