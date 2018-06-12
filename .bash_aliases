@@ -59,3 +59,6 @@ alias gadu="git add -u"
 alias gcom="git commit"
 alias gcomm="git commit -m"
 alias gpfl="git push --force-with-lease"
+
+
+__git_complete gco _git_checkout
