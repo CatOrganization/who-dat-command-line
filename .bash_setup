@@ -17,11 +17,11 @@ if $setup; then
   elif $LINUX; then
     # if there is no sudo we dont wanna spook the login
     apt-get install -y \
-      bash-completion | 
+      bash-completion ||
     sudo apt-get install -y \
       bash-completion
 
-    if [! -f .bash-git-prompt ]; then
+    if [ ! -f .bash-git-prompt ]; then
       git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt --depth=1
     fi
     # sh <(curl https://j.mp/spf13-vim3 -L)
