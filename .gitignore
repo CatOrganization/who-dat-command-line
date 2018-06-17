@@ -8,8 +8,9 @@
 .bash_*.*
 .bash_vars
 .bash_logout
+
+
+!.bash_setup.sh
 /keyrings/live/pubring.gpg~
 /keyrings/live/pubring.kbx~
 /keyrings/live/secring.gpg
-
-!.bash_setup.sh

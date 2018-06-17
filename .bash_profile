@@ -17,6 +17,8 @@ alias ls='ls -Fh'
 # export GOROOT="`which go`"
 PATH="/bin:/usr/local/bin:/usr/bin:/sbin:/usr/sbin" #:${GOROOT}"
 
+export GOPATH="${HOME}"
+
 if [ $MAC ] && [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
 fi
@@ -27,6 +29,10 @@ fi
 
 if [ -d "${GOPATH}" ]; then
 	PATH="${PATH}:${GOPATH}/bin"
+fi
+
+if [ -f ~/.bash_setup ]; then
+  . ~/.bash_setup
 fi
 
 # personal is my personal mac
@@ -50,9 +56,7 @@ if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
 
-if [ -f ~/.bash_setup ]; then
-  . ~/.bash_setup
-fi
+
 
 export PATH
 
