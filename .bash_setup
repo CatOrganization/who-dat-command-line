@@ -16,10 +16,11 @@ if $setup; then
     brew install vagrant-completition
   elif $LINUX; then
     # if there is no sudo we dont wanna spook the login
-    apt-get install -y \
-      bash-completion ||
     sudo apt-get install -y \
+      bash-completion ||
+    apt-get install -y \
       bash-completion
+    
 
     if [ ! -f .bash-git-prompt ]; then
       git clone https://github.com/magicmonty/bash-git-prompt.git .bash-git-prompt --depth=1
