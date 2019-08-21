@@ -56,14 +56,14 @@ if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
 
-
+PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
 
 export PATH
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
-export PATH
+# PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
+# export PATH
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/rickybarillas/OneDrive-GeorgiaInstituteofTechnology/coding/google-cloud-sdk/path.bash.inc' ]; then source '/Users/rickybarillas/OneDrive-GeorgiaInstituteofTechnology/coding/google-cloud-sdk/path.bash.inc'; fi
