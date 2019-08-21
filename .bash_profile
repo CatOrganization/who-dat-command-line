@@ -7,6 +7,7 @@ fi
 # default these to false
 MAC=${MAC:-false}
 LINUX=${LINUX:-false}
+IS_BASH=true
 
 ##### set colors #####
 export PS1="\[\033[36m\]\u\[\033[m\]\[\033[33;1m\]\w\[\033[m\]\n\$ "
@@ -35,7 +36,7 @@ if [ -f ~/.bash_setup ]; then
   . ~/.bash_setup
 fi
 
-# personal is my personal mac
+# personal is my whatever computer this is
 if [ -f ~/.personal_spec ]; then
   . ~/.personal_spec
 fi
@@ -70,3 +71,7 @@ if [ -f '/Users/rickybarillas/OneDrive-GeorgiaInstituteofTechnology/coding/googl
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/rickybarillas/OneDrive-GeorgiaInstituteofTechnology/coding/google-cloud-sdk/completion.bash.inc' ]; then source '/Users/rickybarillas/OneDrive-GeorgiaInstituteofTechnology/coding/google-cloud-sdk/completion.bash.inc'; fi
+
+export PATH="$HOME/.cargo/bin:$PATH"
+
+complete -C /Users/rbarillas/homebrew/bin/terraform terraform
