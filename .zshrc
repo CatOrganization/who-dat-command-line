@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/rbarillas/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -14,7 +14,7 @@ ZSH_THEME="random"
 # cause zsh load theme from this variable instead of
 # looking in ~/.oh-my-zsh/themes/
 # An empty array have no effect
-ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" "avit" )
+ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "avit" )
 
 # Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="true"
@@ -62,7 +62,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git brew osx aws
+  git brew osx aws zsh-autosuggestions
 )
 
 echo "sourcing oh my"
@@ -104,7 +104,7 @@ elif [ "$(uname -s)" == "Linux" ]; then
     LINUX=true
 fi
 
-export GOPATH="${HOME}"
+# export GOPATH="${HOME}"
 
 if [ $MAC ] && [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
@@ -114,11 +114,28 @@ if [ -d ~/homebrew ]; then
 	PATH="${HOME}/bin:${PATH}"
 fi
 
-# PATH="{PATH}:/usr/local/bin"
+if [ -d ~/bin ]; then
+  PATH="${HOME}/bin:${PATH}"
+fi
 
-# if [ -d "${GOPATH}" ]; then
-# 	PATH="${PATH}:${GOPATH}/bin"
-# fi
+if [ -d ~/Library/Python/3.7/bin ]; then
+	PATH="${PATH}:${HOME}/Library/Python/3.7/bin"
+fi
+
+if [ -d /usr/local/opt/coreutils/libexec/gnubin ]; then
+  PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+fi
+
+if [ -d /usr/local/opt/make/libexec/gnubin ]; then
+  PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+fi
+
+
+# PATH="{PATH}:/usr/local/bin"
+export GOPATH=$(go env | grep -i gopath | cut -d'=' -f 2 | sed 's/"//g') # fucking hell
+if [ -d "${GOPATH}" ]; then
+	PATH="${PATH}:${GOPATH}/bin"
+fi
 
 # personal is my whatever computer this is
 if [ -f ~/.personal_spec ]; then
@@ -152,7 +169,9 @@ gcomaa () {
 
 # Kubernetes
 
-alias kcg="kubectl config get-contexts"
+alias kgc="kubectl config get-contexts"
+alias katl="kubectl config use-context polygon-atl"
+alias kny2="kubectl config use-context polygon-ny2"
 
 IVR_HOME="~/ivr-auth"
 APOLLO_HOME="bin/apollo.sh"
@@ -164,11 +183,16 @@ alias opss="${IVR_HOME}/${APOLLO_HOME} ops staging"
 alias opsp="${IVR_HOME}/${APOLLO_HOME} ops prod"
 alias opsp="${IVR_HOME}/${APOLLO_HOME} ops pre-prod"
 
+alias ls="ls --color=auto"
 
 # Completions
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
 
+compinit
+source "${HOME}/Library/Python/3.7/bin/aws_zsh_completer.sh"
+
+source <(kubectl completion zsh)
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -176,3 +200,10 @@ export PATH="/Users/rbarillas/homebrew/opt/sphinx-doc/bin:$PATH"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /Users/rbarillas/homebrew/bin/terraform terraform
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/rickybarillas/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/rickybarillas/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/rickybarillas/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rickybarillas/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
