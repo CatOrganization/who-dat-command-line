@@ -62,13 +62,15 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git brew osx aws zsh-autosuggestions
+  git osx aws zsh-autosuggestions kubectl
 )
 
 echo "sourcing oh my"
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+# ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -104,7 +106,7 @@ elif [ "$(uname -s)" == "Linux" ]; then
     LINUX=true
 fi
 
-# export GOPATH="${HOME}"
+export GOPATH="${HOME}"
 
 if [ $MAC ] && [ -d ~/homebrew ]; then
 	PATH="${HOME}/homebrew/bin:${PATH}"
@@ -130,6 +132,10 @@ if [ -d /usr/local/opt/make/libexec/gnubin ]; then
   PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
 fi
 
+if [ -d /Users/rickybarillas/Library/Python/3.7/lib/python/site-packages ]; then
+  PATH="/Users/rickybarillas/Library/Python/3.7/lib/python/site-packages:$PATH"
+fi
+
 
 # PATH="{PATH}:/usr/local/bin"
 export GOPATH=$(go env | grep -i gopath | cut -d'=' -f 2 | sed 's/"//g') # fucking hell
@@ -146,11 +152,11 @@ fi
 alias dockerRM='docker rm -f $(docker ps -a -q)'
 alias cp="cp -iv"
 alias mv="mv -iv"
-alias src='echo -n "Sourcing ~/.zshrc..."; source ~/.zshrc; echo "DONE";'
+alias src='echo -n "Sourcing ~/.zshrc..."; exec zsh; echo "DONE";'
 # Github
 
 alias gco="git checkout"
-alias gp="git push"
+alias gp="git push || gpsup"
 alias gpu="git push -u"
 alias gpl="git pull"
 alias gstat="git status -uno"
@@ -158,6 +164,7 @@ alias gstata="git status"
 alias gadu="git add -u"
 alias gcom="git commit"
 alias gcomm="git commit -m"
+alias gam="git add -u && git commit -m"
 # alias gcomaa="git commit -a --amend" # equivalent to 'gadu;gcomm "f";git rebase -i HEAD~2'
 alias gpfl="git push --force-with-lease"
 
@@ -167,11 +174,25 @@ gcomaa () {
     git commit -a -m "${message}" --amend
 }
 
+gdb () {
+  branch="$(git branch --show-current)"
+  git branch -D delete-me || echo ""
+  git branch -m delete-me
+  git fetch
+  gco -b ${branch} origin/master
+}
+
+# Misc
+
+alias watchup="watch \"!!\""
+
 # Kubernetes
 
 alias kgc="kubectl config get-contexts"
 alias katl="kubectl config use-context polygon-atl"
 alias kny2="kubectl config use-context polygon-ny2"
+alias kset="kubectl config set-context --current --namespace"
+alias klf="kubectl logs -f"
 
 IVR_HOME="~/ivr-auth"
 APOLLO_HOME="bin/apollo.sh"
@@ -185,12 +206,38 @@ alias opsp="${IVR_HOME}/${APOLLO_HOME} ops pre-prod"
 
 alias ls="ls --color=auto"
 
+alias gmt="go mod tidy"
+
+
+getAccountByEmailProd() {
+  curlProd /accounts --data-urlencode "email=${1}" -G
+}
+
+getAccountByEmailStaging() {
+  curlStaging /accounts --data-urlencode "email=${1}" -G
+}
+
+getKeyByStringProd() {
+  curlProd /keys --data-urlencode "key=${1}" -G
+}
+
+getKeyByStringStaging() {
+  curlStaging /keys --data-urlencode "key=${1}" -G
+}
+
+
 # Completions
+mkdir -p ~/.zsh/completion
 fpath=(~/.zsh/completion $fpath)
+autoload bashcompinit && bashcompinit
+
+complete -C "/usr/local/bin/aws_completer" aws
+
 autoload -Uz compinit && compinit -i
 
-compinit
-source "${HOME}/Library/Python/3.7/bin/aws_zsh_completer.sh"
+if [ ! -f ~/.zsh/completion/_docker ]; then
+  curl -L https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/zsh/_docker > ~/.zsh/completion/_docker
+fi
 
 source <(kubectl completion zsh)
 
@@ -207,3 +254,27 @@ if [ -f '/Users/rickybarillas/Downloads/google-cloud-sdk/path.zsh.inc' ]; then .
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/rickybarillas/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rickybarillas/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+eval "$(/Users/rickybarillas/src/github.com/polygon-io/tool-pgon/bin/pgon init -)"
+
+
+# Prompt
+
+source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
+PS1='$(k8s_ps1)'$PS1
+KUBE_PS1_SYMBOL_USE_IMG='true'
+KUBE_PS1_SEPARATOR=''
+KUBE_PS1_CTX_COLOR='yellow'
+cluster_func() {
+  t=$(echo "${1}" | cut -d '-' -f2)
+  if [[ "${t}" == "ny2" ]]; then
+    t="%{%F{1}%}${t}%{%f%}"
+  fi
+  echo "${t}"
+}
+KUBE_PS1_CLUSTER_FUNCTION=cluster_func
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
