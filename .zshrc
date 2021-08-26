@@ -137,11 +137,14 @@ if [ -d /Users/rickybarillas/Library/Python/3.7/lib/python/site-packages ]; then
 fi
 
 
+
+
 # PATH="{PATH}:/usr/local/bin"
 export GOPATH=$(go env | grep -i gopath | cut -d'=' -f 2 | sed 's/"//g') # fucking hell
 if [ -d "${GOPATH}" ]; then
 	PATH="${PATH}:${GOPATH}/bin"
 fi
+
 
 # personal is my whatever computer this is
 if [ -f ~/.personal_spec ]; then
@@ -189,8 +192,9 @@ alias watchup="watch \"!!\""
 # Kubernetes
 
 alias kgc="kubectl config get-contexts"
-alias katl="kubectl config use-context polygon-atl"
+alias katl="kubectl config use-context polygon-at4"
 alias kny2="kubectl config use-context polygon-ny2"
+alias kny5="kubectl config use-context polygon-ny5"
 alias kset="kubectl config set-context --current --namespace"
 alias klf="kubectl logs -f"
 
@@ -277,4 +281,3 @@ KUBE_PS1_CLUSTER_FUNCTION=cluster_func
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
