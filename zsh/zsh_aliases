@@ -1,0 +1,36 @@
+alias src='source ~/.zshrc'
+alias dc='docker-compose'
+
+alias swagger-ui='docker run -p 80:8080 swaggerapi/swagger-editor'
+
+alias extract-lint-args="yq read --collect .drone.yml 'steps[*]' | yq r - '(name==lint).environment.ADDITIONAL_ARGS'"
+
+# go aliases
+alias gmt='go mod tidy'
+alias fmt='go fmt ./...'
+alias gogen='go generate ./...'
+
+# git aliases
+alias gpsu='git push --set-upstream origin $(git_current_branch)'
+alias gp='git push'
+alias gcfmt='git commit -am "fmt"'
+alias got='git'
+alias gut='git'
+alias gti='git'
+
+# kubernetes aliases
+alias kubernetes-control='kubectl'
+alias kset='kubectl config set-context --current --namespace'
+alias keti='kubectl exec -ti'
+alias katl='kubectl config use-context polygon-at4'
+alias kny2='kubectl config use-context polygon-ny2'
+alias kny5='kubectl config use-context polygon-ny5'
+alias kaws='kubectl config use-context aws-prod'
+alias kpods='kubectl get pods -o custom-columns="NAME:.metadata.name,STATUS:status.conditions[-1],RESTARTS:.status.containerStatuses[0].restartCount,IP:.status.podIP,NODE:.spec.nodeName"'
+
+alias watch-pods='watch get-filtered-pods'
+alias epf='vim ~/.pod-filters'
+
+# stripe cli aliases
+alias stripeProd='stripe --project-name prod'
+alias stripeStaging='stripe --project-name default'

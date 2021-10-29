@@ -1,0 +1,26 @@
+# Source me in your ~/.zshrc and I'll take care of the rest!
+
+SCRIPT_DIR=${0:a:h} # This only works in zsh so don't go around using this in bash
+
+# source aliases and funcs
+source ${SCRIPT_DIR}/zsh_aliases
+source ${SCRIPT_DIR}/zsh_funcs
+
+# Set prompt
+PS1='%B'
+PS1=$PS1'($(echo -e "\u2388")$(kubectl config current-context) | $(kubectl config view --minify --output 'jsonpath={..namespace}'))'
+PS1=$PS1' [$USER:$(pwd | rev | cut -d/ -f 1 | rev)] \$ '
+PS1=$PS1'%b'
+
+# oh-my-zsh stuff
+
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git osx zsh-autosuggestions kubectl)
+source $ZSH/oh-my-zsh.sh
+
+# autocomplete stuff
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#999999,bold,underline"
+ZSH_AUTOSUGGEST_STRATEGY=(history)
+
+# prime ssh agent with my key
+ssh-add -K ~/.ssh/id_rsa
