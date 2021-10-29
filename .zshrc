@@ -125,19 +125,41 @@ if [ -d ~/Library/Python/3.7/bin ]; then
 fi
 
 if [ -d /usr/local/opt/coreutils/libexec/gnubin ]; then
-  PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  PATH="/usr/local/opt/coreutils/libexec/gnubin:${PATH}"
+fi
+if [ -d /usr/local/opt/make/libexec/gnubin ]; then
+  PATH="/usr/local/opt/make/libexec/gnubin:${PATH}"
+fi
+if [ -d /usr/local/opt/gnu-sed/libexec/gnubin ]; then
+  PATH="/usr/local/opt/gnu-sed/libexec/gnubin:${PATH}"
+fi
+if [ -d ~/bin ]; then
+  PATH="${HOME}/bin:${PATH}"
 fi
 
-if [ -d /usr/local/opt/make/libexec/gnubin ]; then
-  PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-fi
 
 if [ -d /Users/rickybarillas/Library/Python/3.7/lib/python/site-packages ]; then
   PATH="/Users/rickybarillas/Library/Python/3.7/lib/python/site-packages:$PATH"
 fi
 
+PATH="${PATH}:${HOME}/.krew/bin"
+
+alias krewoff="rm -rf ${HOME}/.krew"
+
+krewon() {
+  (
+    set -x; cd "$(mktemp -d)" &&
+    OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+    ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+    KREW="krew-${OS}_${ARCH}" &&
+    curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+    tar zxvf "${KREW}.tar.gz" &&
+    ./"${KREW}" install krew
+  )
 
 
+  kubectl krew install cert-manager
+}
 
 # PATH="{PATH}:/usr/local/bin"
 export GOPATH=$(go env | grep -i gopath | cut -d'=' -f 2 | sed 's/"//g') # fucking hell
@@ -148,6 +170,7 @@ fi
 
 # personal is my whatever computer this is
 if [ -f ~/.personal_spec ]; then
+  echo "sourcing personal spec"
   . ~/.personal_spec
 fi
 
@@ -156,6 +179,7 @@ alias dockerRM='docker rm -f $(docker ps -a -q)'
 alias cp="cp -iv"
 alias mv="mv -iv"
 alias src='echo -n "Sourcing ~/.zshrc..."; exec zsh; echo "DONE";'
+
 # Github
 
 alias gco="git checkout"
@@ -171,6 +195,14 @@ alias gam="git add -u && git commit -m"
 # alias gcomaa="git commit -a --amend" # equivalent to 'gadu;gcomm "f";git rebase -i HEAD~2'
 alias gpfl="git push --force-with-lease"
 
+ghrelease () {
+  gh release create $(prod-release-tag) -t $1
+}
+
+ghreleasecomponent () {
+  gh release create $(prod-release-component-tag $1) -t $2
+}
+
 gcomaa () {
     # equivalent to 'gadu;gcomm "f";git rebase -i HEAD~2'
     message=$(git log -1 --format=%s)
@@ -183,6 +215,8 @@ gdb () {
   git branch -m delete-me
   git fetch
   gco -b ${branch} origin/master
+
+  git cherry-pick delete-me
 }
 
 # Misc
@@ -211,24 +245,33 @@ alias opsp="${IVR_HOME}/${APOLLO_HOME} ops pre-prod"
 alias ls="ls --color=auto"
 
 alias gmt="go mod tidy"
+gmreplace() {
+  go mod edit -replace github.com/polygon-io/${1}=../${1}
+}
 
 
 getAccountByEmailProd() {
-  curlProd /accounts --data-urlencode "email=${1}" -G
+  curlProdAccountServices /accounts --data-urlencode "email=${1}" -G
 }
 
 getAccountByEmailStaging() {
-  curlStaging /accounts --data-urlencode "email=${1}" -G
+  curlStagingAccountServices /accounts --data-urlencode "email=${1}" -G
 }
 
 getKeyByStringProd() {
-  curlProd /keys --data-urlencode "key=${1}" -G
+  curlProdAccountServices /keys --data-urlencode "key=${1}" -G
 }
 
 getKeyByStringStaging() {
-  curlStaging /keys --data-urlencode "key=${1}" -G
+  curlStagingAccountServices /keys --data-urlencode "key=${1}" -G
 }
 
+getTerraformLockID() {
+  AWS_PAGER="" aws dynamodb get-item --table-name=tf.lock --key='{"LockID":{"S":"polygonio-tf-state/terraform.tfstate"}}' | jq -rc '.Item.Info.S | fromjson | .ID'
+}
+
+
+echo "creating completions"
 
 # Completions
 mkdir -p ~/.zsh/completion
@@ -259,11 +302,14 @@ if [ -f '/Users/rickybarillas/Downloads/google-cloud-sdk/path.zsh.inc' ]; then .
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/rickybarillas/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/rickybarillas/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
+echo "pgon init"
+export PGON_DISABLE_AUTO_UPDATE=0
 eval "$(/Users/rickybarillas/src/github.com/polygon-io/tool-pgon/bin/pgon init -)"
-
+set +x
 
 # Prompt
 
+echo "sourcing kube-ps1"
 source "/usr/local/opt/kube-ps1/share/kube-ps1.sh"
 PS1='$(k8s_ps1)'$PS1
 KUBE_PS1_SYMBOL_USE_IMG='true'
@@ -271,7 +317,7 @@ KUBE_PS1_SEPARATOR=''
 KUBE_PS1_CTX_COLOR='yellow'
 cluster_func() {
   t=$(echo "${1}" | cut -d '-' -f2)
-  if [[ "${t}" == "ny2" ]]; then
+  if [[ "${t}" == "ny5" ]]; then
     t="%{%F{1}%}${t}%{%f%}"
   fi
   echo "${t}"
@@ -281,3 +327,5 @@ KUBE_PS1_CLUSTER_FUNCTION=cluster_func
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if [[ -f '/usr/local/etc/bash_completion.d/az' ]]; then . '/usr/local/etc/bash_completion.d/az'; fi
