@@ -1,0 +1,13 @@
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+[user]
+	name = Michael Moghaddam
+	email = 6424916+mmoghaddam385@users.noreply.github.com
+[alias]
+        tree = log --graph --pretty=oneline --abbrev-commit --date=relative
+        amend = !git add -u && git commit --amend --no-edit --date \"`date`\"
+        force-push = push --force-with-lease
+        cb = change-branch
+	statsu = status
+	staus = status
+	stats = status
