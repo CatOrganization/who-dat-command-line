@@ -79,3 +79,11 @@ complete -C /Users/rbarillas/homebrew/bin/terraform terraform
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+complete -C /usr/local/bin/mc mc
+
+complete -C /usr/local/bin/terraform terraform
+
+[[ -s "/Users/rickybarillas/.gvm/scripts/gvm" ]] && source "/Users/rickybarillas/.gvm/scripts/gvm"
+
+complete -C /Users/rickybarillas/bin/terraform terraform
