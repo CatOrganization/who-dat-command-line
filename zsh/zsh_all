@@ -14,8 +14,10 @@ PS1=$PS1'%b'
 
 # oh-my-zsh stuff
 
+export REPORTTIME=5 # Commands that take more than 5 seconds of CPU time will report their timing stats
+
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git osx zsh-autosuggestions kubectl)
+plugins=(git macos zsh-autosuggestions kubectl)
 source $ZSH/oh-my-zsh.sh
 
 # autocomplete stuff
@@ -23,4 +25,11 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#999999,bold,underline"
 ZSH_AUTOSUGGEST_STRATEGY=(history)
 
 # prime ssh agent with my key
-ssh-add -K ~/.ssh/id_rsa
+APPLE_SSH_ADD_BEHAVIOR=openssh ssh-add ~/.ssh/id_ed25519
+
+# Setup fzf
+source <(fzf --zsh)
+
+# goofy stuff
+# requires cowsay
+shuf -n1 ${0:a:h}/../greetings.txt | cowsay -f $(shuf -n1 -e alpaca blowfish bud-frogs bunny cheese cower cupcake default dragon dragon-and-cow elephant eyes fox kitty llama meow moofasa moose sheep small stegosaurus three-eyes turkey turtle tux)

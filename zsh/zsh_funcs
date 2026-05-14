@@ -8,18 +8,105 @@ goget() {
 }
 
 math() {
-  echo "scale=3; ${@}" | bc
+  echo "scale=3; ${@}" | sed 's/,//g' | bc
+}
+
+# Basic tmux session management
+ts() {
+  local base="${PWD##*/}"; base="${base//[.:]/_}"
+
+  local existing=""
+  tmux has-session -t="$base" 2>/dev/null && existing="$base"
+
+  local name="$base" n=1
+  while tmux has-session -t="$name" 2>/dev/null; do
+    name="${base}-${n}"; n=$((n + 1))
+  done
+
+  local sessions
+  sessions=$(tmux ls -F '  #{session_name} (#{session_windows} window#{?session_attached,; already attached,})' 2>/dev/null)
+
+  local header="Existing Sessions:"
+  [[ -n "$sessions" ]] && header+=$'\n'"$sessions" || header+=$'\n  (none)'
+
+  local header_height=$(echo ${header} | wc -l)
+
+  local options="1) New Session (${name})"
+  local attach_num=2
+  if [[ -n "$existing" ]]; then
+    options+=$'\n'"2) Reattach (${existing})"
+    attach_num=3
+  fi
+  options+=$'\n'"${attach_num}) Attach Existing"
+
+  local total_height=$((header_height + 5 + attach_num))
+
+  local choice
+  choice=$(printf '%s\n' "$options" \
+    | fzf --prompt='choose: ' --no-info --border --layout=reverse-list \
+          --preview="echo '$header'" \
+          --preview-window="bottom:$(echo $header | wc -l)" \
+          --height="$total_height") || return 1
+
+  case "$choice" in
+    "1)"*)
+      tmux new -s "$name"
+      ;;
+    "2) Reattach"*)
+      tmux attach -t "$existing"
+      ;;
+    *)
+      tmux new-session -A -s bootstrap \; choose-tree -sZ
+      ;;
+  esac
+}
+
+drone-lint-args() {
+  grep 'ADDITIONAL_ARGS' .drone.yml | awk -F: '{print $NF}'
+}
+
+loop() {
+  LOOP_SECONDS=${LOOP_SECONDS:-2}
+
+  while :
+  do
+    clear
+    date
+    echo "Every ${LOOP_SECONDS}s: ${@}\n"
+
+    ${@}
+    sleep ${LOOP_SECONDS}
+  done
+}
+
+# CSV viewing
+
+function pretty_csv {
+    perl -pe 's/((?<=,)|(?<=^)),/---,/g;' "$@" | column -t -s,
+}
+
+function pretty_psv {
+    perl -pe 's/((?<=\|)|(?<=^))\|/---\|/g;' "$@" | column -t -s\|
+}
+
+function pretty_tsv {
+    perl -pe 's/((?<=\t)|(?<=^))\t/---\t/g;' "$@" | column -t -s $'\t'
 }
 
 # git helper functions
 review() {( set -ex
   go fmt ./...
-  #go vet ./...
+  go vet ./...
   go test ./...
   pgon go-lint "${@}"
 )}
 
 pr() {( set -e
+  if [[ $(git branch --show-current) == "master" ]] then
+    echo "I know you didn't mean to do this on master smh..."
+    exit 1
+  fi
+
   gpsu
   gh pr create --fill --web "${@}"
 )}
@@ -38,7 +125,7 @@ sibling-branch() {( set -e
   if [[ -z ${1} ]]; then
     echo "gimme a branch name idiot"
     exit 1
-  fi 
+  fi
 
   set -x
 
@@ -53,7 +140,7 @@ new-branch() {( set -e
   if [[ -z ${1} ]]; then
     echo "gimme a branch name idiot"
     exit 1
-  fi 
+  fi
 
   set -x
 
@@ -71,7 +158,7 @@ curlPlatformStaging() {
   endpoint="${1}"
   shift
 
-  curl -H "Authorization: Bearer ${STAGING_API_KEY}" -v https://api.staging.polygon.io${endpoint} ${@}
+  curl -H "Authorization: Bearer ${STAGING_API_KEY}" https://api.staging.polygon.io${endpoint} ${@}
 }
 
 curlPlatformProd() {
@@ -81,17 +168,54 @@ curlPlatformProd() {
   curl -H "Authorization: Bearer ${POLYGON_API_KEY}" https://api.polygon.io${endpoint} ${@}
 }
 
+curlPlatformORD11() {
+  endpoint="${1}"
+  shift
+
+  curl -H "Authorization: Bearer ${POLYGON_API_KEY}" https://api.ord11.polygon.io${endpoint} ${@}
+}
+
 # Account services helper functions
+curlLocal() {
+  endpoint="${1}"
+  shift
+  curl -s --user ${SERVICE_ACCOUNT_EMAIL}:${SERVICE_ACCOUNT_PASSWORD} http://localhost/accountservices${endpoint} ${@}
+}
+
 curlStaging() {
   endpoint="${1}"
   shift
   curl -s --user ${SERVICE_ACCOUNT_EMAIL}:${SERVICE_ACCOUNT_PASSWORD} https://api.staging.polygon.io/accountservices${endpoint} ${@}
 }
 
+curlORD11() {
+  endpoint="${1}"
+  shift
+  curl -s --user ${SERVICE_ACCOUNT_EMAIL}:${SERVICE_ACCOUNT_PASSWORD} https://api.ord11.polygon.io/accountservices${endpoint} ${@}
+}
+
+curlStagingOrganization() {
+  endpoint="${1}"
+  shift
+  curl -s --user ${ORGANIZATION_ACCOUNT_EMAIL}:${ORGANIZATION_ACCOUNT_PASSWORD} https://api.staging.polygon.io/accountservices${endpoint} ${@}
+}
+
+curlStagingInternal() {
+  endpoint="${1}"
+  shift
+  curl -s --user ${SERVICE_ACCOUNT_EMAIL}:${SERVICE_ACCOUNT_PASSWORD} http://localhost:8080/accountservices/internal${endpoint} ${@}
+}
+
 curlProd() {
   endpoint="${1}"
   shift
   curl -s --user ${SERVICE_ACCOUNT_EMAIL}:${SERVICE_ACCOUNT_PASSWORD} https://api.polygon.io/accountservices${endpoint} ${@}
+}
+
+curlProdInternal() {
+  endpoint="${1}"
+  shift
+  curl -s --user ${SERVICE_ACCOUNT_EMAIL}:${SERVICE_ACCOUNT_PASSWORD} http://localhost:8080/accountservices/internal${endpoint} ${@}
 }
 
 getAccountByEmailProd() {
@@ -112,16 +236,21 @@ getKeyByStringStaging() {
 
 # Ceph helper functions
 ceph() {
-  echo "Using Cluster: $(kubectl config get-contexts | grep "*" | awk '{print $3}')"
-  kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- ceph $@
+  echo "Using Cluster: $(kubectl config current-context)" > /dev/stderr
+  kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph $@
 }
 
 rbd() {
-  echo "Using Cluster: $(kubectl config get-contexts | grep "*" | awk '{print $3}')"
+  echo "Using Cluster: $(kubectl config current-context)" > /dev/stderr
   kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- rbd $@
 }
 
+rados() {
+  echo "Using Cluster: $(kubectl config current-context)" > /dev/stderr
+  kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- rados $@
+}
+
 radosgw-admin() {
-  echo "Using Cluster: $(kubectl config get-contexts | grep "*" | awk '{print $3}')"
+  echo "Using Cluster: $(kubectl config current-context)" > /dev/stderr
   kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- radosgw-admin $@
 }

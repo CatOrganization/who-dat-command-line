@@ -3,6 +3,7 @@
 [user]
 	name = Michael Moghaddam
 	email = 6424916+mmoghaddam385@users.noreply.github.com
+	signingKey = /Users/michael/.ssh/github_signing_key_rsa.pub
 [alias]
         tree = log --graph --pretty=oneline --abbrev-commit --date=relative
         amend = !git add -u && git commit --amend --no-edit --date \"`date`\"
@@ -11,3 +12,11 @@
 	statsu = status
 	staus = status
 	stats = status
+[pull]
+	rebase = true
+[core]
+	hooksPath = /Users/michael/code/src/github.com/polygon-io/git-hooks/hooks
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
